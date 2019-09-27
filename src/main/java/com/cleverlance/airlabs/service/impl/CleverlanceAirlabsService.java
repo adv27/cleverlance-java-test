@@ -153,20 +153,20 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public List<Airport> autoComplete(String query) {
+    public AutoComplete autoComplete(String query) {
         String endpoint = URLBuilder(env.getProperty("airlabs.autocomplete"));
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(endpoint)
                 .queryParam("query", query);
         endpoint = builder.toUriString();
         System.out.println(endpoint);
-        CommonResponse<List<Airport>> response = restTemplate.exchange(
+        CommonResponse<AutoComplete> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<List<Airport>>>() {
+                new ParameterizedTypeReference<CommonResponse<AutoComplete>>() {
                 }).getBody();
-        List<Airport> airports = response.getResponse();
-        return airports;
+        AutoComplete autoComplete = response.getResponse();
+        return autoComplete;
     }
 
     @Override

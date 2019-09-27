@@ -92,9 +92,9 @@ public class AirlabsController {
     }
 
     @GetMapping(value = "/autocomplete", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Airport> autoComplete(@RequestParam() String query) {
-        List<Airport> airports = airlabsService.autoComplete(query);
-        return airports;
+    public AutoComplete autoComplete(@RequestParam() String query) {
+        AutoComplete autoComplete = airlabsService.autoComplete(query);
+        return autoComplete;
     }
 
     @GetMapping(value = "/nearby", produces = MediaType.APPLICATION_JSON_VALUE)

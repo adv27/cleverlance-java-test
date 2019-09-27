@@ -23,7 +23,7 @@ public interface AirlabsService {
 
     public abstract List<Timezone> timezones();
 
-    public abstract List<Airport> autoComplete(String query);
+    public abstract AutoComplete autoComplete(String query);
 
     public abstract List<Airport> nearby(double lat, double lng, double distance);
 
