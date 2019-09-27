@@ -1,17 +1,16 @@
 package com.cleverlance.airlabs.controller;
 
+import com.cleverlance.airlabs.dao.AirportDAO;
+import com.cleverlance.airlabs.entity.CommonResponse;
+import com.cleverlance.airlabs.entity.airlabs.*;
 import com.cleverlance.airlabs.exception.PremiumAccountOnly;
-import com.cleverlance.airlabs.model.CommonResponse;
-import com.cleverlance.airlabs.model.airlabs.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -27,11 +26,20 @@ public class AirlabsController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private AirportDAO airportDAO;
+
     private String URLBuilder(String endpoint) {
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromHttpUrl(endpoint)
                 .queryParam("api_key", env.getProperty("airlabs.api-key"));
         return builder.toUriString();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/ping")
+    public void ping() {
+        System.out.println(airportDAO.findAll());
     }
 
     @GetMapping(value = "/airports", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,6 +53,14 @@ public class AirlabsController {
                 new ParameterizedTypeReference<CommonResponse<List<Airport>>>() {
                 }).getBody();
         List<Airport> airports = response.getResponse();
+
+        // store Airports data
+        List<Airport> insert = airports.stream()
+                .filter(airport -> !airportDAO.existsById(airport.getCode()))
+                .collect(Collectors.toList());
+        // bulk insert
+        airportDAO.saveAll(insert);
+
         // do filter by name & code (contains ignore case)
         if (!name.isEmpty()) {
             airports = airports

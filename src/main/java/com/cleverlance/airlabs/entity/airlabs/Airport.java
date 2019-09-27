@@ -1,9 +1,16 @@
-package com.cleverlance.airlabs.model.airlabs;
+package com.cleverlance.airlabs.entity.airlabs;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "AIRPORT")
 public class Airport {
+    @Id
     private String code;
     private String name;
     @JsonProperty("country_name")
@@ -11,6 +18,14 @@ public class Airport {
     private String countryName;
 
     public Airport() {
+    }
+
+    @Override
+    public String toString() {
+        return "Airport{" +
+                "code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     public String getCode() {

@@ -1,4 +1,4 @@
-package com.cleverlance.airlabs.model.airlabs;
+package com.cleverlance.airlabs.entity.airlabs;
 
 public class Aircraft {
     private String code;

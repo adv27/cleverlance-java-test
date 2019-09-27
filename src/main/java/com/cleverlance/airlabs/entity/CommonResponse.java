@@ -1,4 +1,4 @@
-package com.cleverlance.airlabs.model;
+package com.cleverlance.airlabs.entity;
 
 public class CommonResponse<T> {
     private Object request;
