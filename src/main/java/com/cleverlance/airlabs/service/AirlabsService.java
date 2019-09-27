@@ -5,29 +5,31 @@ import com.cleverlance.airlabs.entity.airlabs.*;
 import java.util.List;
 
 public interface AirlabsService {
-    public abstract List<Airport> airports(String name, String code);
+    public abstract List<Airport> getAirports();
 
-    public abstract List<City> cities();
+    public abstract Airport getAirportByCode(String code);
 
-    public abstract List<Country> countries();
+    public abstract List<City> getCities();
 
-    public abstract List<Airline> airlines();
+    public abstract List<Country> getCountries();
 
-    public abstract List<Tax> taxes();
+    public abstract List<Airline> getAirlines();
 
-    public abstract List<Aircraft> aircrafts();
+    public abstract List<Tax> getTaxes();
 
-    public abstract List<Airplane> airplanes();
+    public abstract List<Aircraft> getAircrafts();
 
-    public abstract List<Route> routes();
+    public abstract List<Airplane> getAirplanes();
 
-    public abstract List<Timezone> timezones();
+    public abstract List<Route> getRoutes();
 
-    public abstract AutoComplete autoComplete(String query);
+    public abstract List<Timezone> getTimezones();
 
-    public abstract List<Airport> nearby(double lat, double lng, double distance);
+    public abstract AutoComplete getAutoComplete(String query);
 
-    public abstract List<Flight> flights();
+    public abstract List<Airport> getNearby(double lat, double lng, double distance);
 
-    public abstract List<TimeTable> timeTables();
+    public abstract List<Flight> getFlights();
+
+    public abstract List<Timetable> getTimetables();
 }

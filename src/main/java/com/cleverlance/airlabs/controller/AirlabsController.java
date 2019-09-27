@@ -27,10 +27,15 @@ public class AirlabsController {
         System.out.println(airportDAO.findAll());
     }
 
+
     @GetMapping(value = "/airports", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Airport> airports(@RequestParam(defaultValue = "", required = false) String name,
-                                  @RequestParam(defaultValue = "", required = false) String code) {
-        List<Airport> airports = airlabsService.airports(name, code);
+    public Object airports(@RequestParam(defaultValue = "", required = false) String code) {
+        if (code != null && !code.isEmpty()) {
+            Airport airport = airlabsService.getAirportByCode(code);
+            return airport;
+        }
+
+        List<Airport> airports = airlabsService.getAirports();
 
         // store Airports data
         List<Airport> insert = airports.stream()
@@ -44,56 +49,56 @@ public class AirlabsController {
 
     @GetMapping(value = "/cities", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<City> cities() {
-        List<City> cities = airlabsService.cities();
+        List<City> cities = airlabsService.getCities();
         return cities;
     }
 
     @GetMapping(value = "/countries", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Country> countries() {
-        List<Country> countries = airlabsService.countries();
+        List<Country> countries = airlabsService.getCountries();
         return countries;
     }
 
     @GetMapping(value = "/airlines", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Airline> airlines() {
-        List<Airline> airlines = airlabsService.airlines();
+        List<Airline> airlines = airlabsService.getAirlines();
         return airlines;
     }
 
     @GetMapping(value = "/taxes", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Tax> taxes() {
-        List<Tax> taxes = airlabsService.taxes();
+        List<Tax> taxes = airlabsService.getTaxes();
         return taxes;
     }
 
     @GetMapping(value = "/aircrafts", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Aircraft> aircrafts() {
-        List<Aircraft> aircrafts = airlabsService.aircrafts();
+        List<Aircraft> aircrafts = airlabsService.getAircrafts();
         return aircrafts;
     }
 
     @GetMapping(value = "/airplanes", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Airplane> airplanes() {
-        List<Airplane> airplanes = airlabsService.airplanes();
+        List<Airplane> airplanes = airlabsService.getAirplanes();
         return airplanes;
     }
 
 
     @GetMapping(value = "/routes", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Route> routes() {
-        List<Route> routes = airlabsService.routes();
+        List<Route> routes = airlabsService.getRoutes();
         return routes;
     }
 
     @GetMapping(value = "/timezones", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Timezone> timezones() {
-        List<Timezone> timezones = airlabsService.timezones();
+        List<Timezone> timezones = airlabsService.getTimezones();
         return timezones;
     }
 
     @GetMapping(value = "/autocomplete", produces = MediaType.APPLICATION_JSON_VALUE)
     public AutoComplete autoComplete(@RequestParam() String query) {
-        AutoComplete autoComplete = airlabsService.autoComplete(query);
+        AutoComplete autoComplete = airlabsService.getAutoComplete(query);
         return autoComplete;
     }
 
@@ -101,19 +106,19 @@ public class AirlabsController {
     public List<Airport> nearby(@RequestParam() double lat,
                                 @RequestParam() double lng,
                                 @RequestParam() double distance) {
-        List<Airport> airports = airlabsService.nearby(lat, lng, distance);
+        List<Airport> airports = airlabsService.getNearby(lat, lng, distance);
         return airports;
     }
 
     @GetMapping(value = "/flights", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Flight> flights() {
-        List<Flight> flights = airlabsService.flights();
+        List<Flight> flights = airlabsService.getFlights();
         return flights;
     }
 
     @GetMapping(value = "/timetable", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TimeTable> timeTables() {
-        List<TimeTable> timeTables = airlabsService.timeTables();
-        return timeTables;
+    public List<Timetable> timeTables() {
+        List<Timetable> timetables = airlabsService.getTimetables();
+        return timetables;
     }
 }

@@ -10,11 +10,11 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CleverlanceAirlabsService implements AirlabsService {
@@ -37,7 +37,7 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public List<Airport> airports(String name, String code) {
+    public List<Airport> getAirports() {
         String endpoint = URLBuilder(env.getProperty("airlabs.airports"));
         CommonResponse<List<Airport>> response = restTemplate.exchange(
                 endpoint,
@@ -46,26 +46,30 @@ public class CleverlanceAirlabsService implements AirlabsService {
                 new ParameterizedTypeReference<CommonResponse<List<Airport>>>() {
                 }).getBody();
         List<Airport> airports = response.getResponse();
-
-        // do filter by name & code (contains ignore case)
-        if (!name.isEmpty()) {
-            airports = airports
-                    .stream()
-                    .filter(a -> a.getName().toLowerCase().contains(name.toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-        if (!code.isEmpty()) {
-            airports = airports
-                    .stream()
-                    .filter(a -> a.getCode().toLowerCase().contains(code.toLowerCase()))
-                    .collect(Collectors.toList());
-        }
-
         return airports;
     }
 
     @Override
-    public List<City> cities() {
+    public Airport getAirportByCode(String code) {
+        String endpoint = URLBuilder(env.getProperty("airlabs.airports"));
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(endpoint)
+                .queryParam("code", code);
+        endpoint = builder.toUriString();
+        CommonResponse<List<Airport>> response = restTemplate.exchange(
+                endpoint,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<CommonResponse<List<Airport>>>() {
+                }).getBody();
+        List<Airport> airports = response.getResponse();
+        if (!CollectionUtils.isEmpty(airports)) {
+            return airports.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public List<City> getCities() {
         String endpoint = URLBuilder(env.getProperty("airlabs.cities"));
         CommonResponse<List<City>> response = restTemplate.exchange(
                 endpoint,
@@ -78,7 +82,7 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public List<Country> countries() {
+    public List<Country> getCountries() {
         String endpoint = URLBuilder(env.getProperty("airlabs.countries"));
         CommonResponse<List<Country>> response = restTemplate.exchange(
                 endpoint,
@@ -91,7 +95,7 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public List<Airline> airlines() {
+    public List<Airline> getAirlines() {
         String endpoint = URLBuilder(env.getProperty("airlabs.airlines"));
         CommonResponse<List<Airline>> response = restTemplate.exchange(
                 endpoint,
@@ -104,12 +108,12 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public List<Tax> taxes() {
+    public List<Tax> getTaxes() {
         throw new PremiumAccountOnlyException("For PREMIUM accounts only!");
     }
 
     @Override
-    public List<Aircraft> aircrafts() {
+    public List<Aircraft> getAircrafts() {
         String endpoint = URLBuilder(env.getProperty("airlabs.aircrafts"));
         CommonResponse<List<Aircraft>> response = restTemplate.exchange(
                 endpoint,
@@ -122,12 +126,12 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public List<Airplane> airplanes() {
+    public List<Airplane> getAirplanes() {
         throw new PremiumAccountOnlyException("For PREMIUM accounts only!");
     }
 
     @Override
-    public List<Route> routes() {
+    public List<Route> getRoutes() {
         String endpoint = URLBuilder(env.getProperty("airlabs.routes"));
         CommonResponse<List<Route>> response = restTemplate.exchange(
                 endpoint,
@@ -140,7 +144,7 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public List<Timezone> timezones() {
+    public List<Timezone> getTimezones() {
         String endpoint = URLBuilder(env.getProperty("airlabs.timezones"));
         CommonResponse<List<Timezone>> response = restTemplate.exchange(
                 endpoint,
@@ -153,12 +157,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public AutoComplete autoComplete(String query) {
+    public AutoComplete getAutoComplete(String query) {
         String endpoint = URLBuilder(env.getProperty("airlabs.autocomplete"));
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(endpoint)
                 .queryParam("query", query);
         endpoint = builder.toUriString();
-        System.out.println(endpoint);
         CommonResponse<AutoComplete> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
@@ -170,7 +173,7 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public List<Airport> nearby(double lat, double lng, double distance) {
+    public List<Airport> getNearby(double lat, double lng, double distance) {
         String endpoint = URLBuilder(env.getProperty("airlabs.nearby"));
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(endpoint)
                 .queryParam("lat", lat)
@@ -188,12 +191,12 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public List<Flight> flights() {
+    public List<Flight> getFlights() {
         throw new PremiumAccountOnlyException("For PREMIUM accounts only!");
     }
 
     @Override
-    public List<TimeTable> timeTables() {
+    public List<Timetable> getTimetables() {
         throw new PremiumAccountOnlyException("For PREMIUM accounts only!");
     }
 }
