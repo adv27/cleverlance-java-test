@@ -1,11 +1,15 @@
 package com.cleverlance.airlabs.controller;
 
-import com.cleverlance.airlabs.dao.AirportDAO;
+import com.cleverlance.airlabs.entity.Response;
 import com.cleverlance.airlabs.entity.airlabs.*;
+import com.cleverlance.airlabs.repository.AirportRepository;
 import com.cleverlance.airlabs.service.AirlabsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,111 +18,171 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/airlabs")
 public class AirlabsController {
+    private Logger logger = LoggerFactory.getLogger(AirlabsController.class);
 
     @Autowired
-    private AirportDAO airportDAO;
+    private AirportRepository airportRepository;
 
     @Autowired
     private AirlabsService airlabsService;
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/ping")
+    @ResponseStatus(HttpStatus.OK)
     public void ping() {
-        System.out.println(airportDAO.findAll());
+        System.out.println(airportRepository.findAll());
     }
 
-
     @GetMapping(value = "/airports", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object airports(@RequestParam(defaultValue = "", required = false) String code) {
-        if (code != null && !code.isEmpty()) {
+    public ResponseEntity<Response> airports(@RequestParam(defaultValue = "", required = false) String code) {
+        Response response;
+        code = code.toUpperCase().trim();
+        if (!code.isEmpty()) {
             Airport airport = airlabsService.getAirportByCode(code);
-            return airport;
+            response = new Response<>(
+                    HttpStatus.OK.value(),
+                    HttpStatus.OK.getReasonPhrase(),
+                    airport);
+        } else {
+            List<Airport> airports = airlabsService.getAirports();
+            response = new Response<>(
+                    HttpStatus.OK.value(),
+                    HttpStatus.OK.getReasonPhrase(),
+                    airports);
+
+            // store Airports data
+            List<Airport> insert = airports.stream()
+                    .filter(airport -> !airportRepository.existsById(airport.getCode()))
+                    .collect(Collectors.toList());
+            // bulk insert
+            airportRepository.saveAll(insert);
         }
-
-        List<Airport> airports = airlabsService.getAirports();
-
-        // store Airports data
-        List<Airport> insert = airports.stream()
-                .filter(airport -> !airportDAO.existsById(airport.getCode()))
-                .collect(Collectors.toList());
-        // bulk insert
-        airportDAO.saveAll(insert);
-
-        return airports;
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/cities", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<City> cities() {
+    public ResponseEntity<Response<List<City>>> cities() {
         List<City> cities = airlabsService.getCities();
-        return cities;
+        Response<List<City>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                cities);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/countries", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Country> countries() {
+    public ResponseEntity<Response<List<Country>>> countries() {
         List<Country> countries = airlabsService.getCountries();
-        return countries;
+        Response<List<Country>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                countries);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/airlines", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Airline> airlines() {
+    public ResponseEntity<Response<List<Airline>>> airlines() {
         List<Airline> airlines = airlabsService.getAirlines();
-        return airlines;
+        Response<List<Airline>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                airlines);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/taxes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Tax> taxes() {
+    public ResponseEntity<Response<List<Tax>>> taxes() {
         List<Tax> taxes = airlabsService.getTaxes();
-        return taxes;
+        Response<List<Tax>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                taxes);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/aircrafts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Aircraft> aircrafts() {
+    public ResponseEntity<Response<List<Aircraft>>> aircrafts() {
         List<Aircraft> aircrafts = airlabsService.getAircrafts();
-        return aircrafts;
+        Response<List<Aircraft>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                aircrafts);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/airplanes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Airplane> airplanes() {
+    public ResponseEntity<Response<List<Airplane>>> airplanes() {
         List<Airplane> airplanes = airlabsService.getAirplanes();
-        return airplanes;
+        Response<List<Airplane>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                airplanes);
+        return ResponseEntity.ok(response);
     }
 
 
     @GetMapping(value = "/routes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Route> routes() {
+    public ResponseEntity<Response<List<Route>>> routes() {
         List<Route> routes = airlabsService.getRoutes();
-        return routes;
+        Response<List<Route>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                routes);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/timezones", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Timezone> timezones() {
+    public ResponseEntity<Response<List<Timezone>>> timezones() {
         List<Timezone> timezones = airlabsService.getTimezones();
-        return timezones;
+        Response<List<Timezone>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                timezones);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/autocomplete", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AutoComplete autoComplete(@RequestParam() String query) {
+    @ResponseBody
+    public ResponseEntity<Response<AutoComplete>> autoComplete(@RequestParam() String query) {
         AutoComplete autoComplete = airlabsService.getAutoComplete(query);
-        return autoComplete;
+        Response<AutoComplete> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                autoComplete);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/nearby", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Airport> nearby(@RequestParam() double lat,
-                                @RequestParam() double lng,
-                                @RequestParam() double distance) {
+    public ResponseEntity<Response<List<Airport>>> nearby(
+            @RequestParam() double lat,
+            @RequestParam() double lng,
+            @RequestParam() double distance) {
         List<Airport> airports = airlabsService.getNearby(lat, lng, distance);
-        return airports;
+        Response<List<Airport>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                airports);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/flights", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Flight> flights() {
+    @ResponseBody
+    public ResponseEntity<Response<List<Flight>>> flights() {
         List<Flight> flights = airlabsService.getFlights();
-        return flights;
+        Response<List<Flight>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                flights);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/timetable", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Timetable> timeTables() {
+    @ResponseBody
+    public ResponseEntity<Response<List<Timetable>>> timeTables() {
         List<Timetable> timetables = airlabsService.getTimetables();
-        return timetables;
+        Response<List<Timetable>> response = new Response<>(
+                HttpStatus.OK.value(),
+                HttpStatus.OK.getReasonPhrase(),
+                timetables);
+        return ResponseEntity.ok(response);
     }
 }

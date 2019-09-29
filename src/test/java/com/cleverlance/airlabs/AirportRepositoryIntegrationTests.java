@@ -1,7 +1,7 @@
 package com.cleverlance.airlabs;
 
-import com.cleverlance.airlabs.dao.AirportDAO;
 import com.cleverlance.airlabs.entity.airlabs.Airport;
+import com.cleverlance.airlabs.repository.AirportRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +13,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class AirportRepositoryIntegrationTest {
+public class AirportRepositoryIntegrationTests {
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private AirportDAO airportDAO;
+    private AirportRepository airportRepository;
 
     @Test
     public void whenFindByCode_thenReturnAirport() {
@@ -28,7 +28,7 @@ public class AirportRepositoryIntegrationTest {
         entityManager.flush();
 
         // when
-        Airport found = airportDAO.findByCode(hanoi.getCode());
+        Airport found = airportRepository.findByCode(hanoi.getCode());
 
         // then
         assertThat(found.getCode())

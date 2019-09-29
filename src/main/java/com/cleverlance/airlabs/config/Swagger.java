@@ -20,7 +20,7 @@ public class Swagger {
         return new Docket(DocumentationType.SWAGGER_2).select()
                 .apis(RequestHandlerSelectors
                         .basePackage("com.cleverlance.airlabs.controller"))
-                .paths(PathSelectors.regex("/.*"))
+                .paths(PathSelectors.ant("/airlabs/*"))
                 .build().apiInfo(apiEndPointsInfo());
     }
 

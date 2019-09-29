@@ -1,6 +1,6 @@
 package com.cleverlance.airlabs.service.impl;
 
-import com.cleverlance.airlabs.entity.CommonResponse;
+import com.cleverlance.airlabs.entity.AirlabsResponse;
 import com.cleverlance.airlabs.entity.airlabs.*;
 import com.cleverlance.airlabs.exception.ApiKeyNotFoundException;
 import com.cleverlance.airlabs.exception.PremiumAccountOnlyException;
@@ -39,11 +39,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
     @Override
     public List<Airport> getAirports() {
         String endpoint = URLBuilder(env.getProperty("airlabs.airports"));
-        CommonResponse<List<Airport>> response = restTemplate.exchange(
+        AirlabsResponse<List<Airport>> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<List<Airport>>>() {
+                new ParameterizedTypeReference<AirlabsResponse<List<Airport>>>() {
                 }).getBody();
         List<Airport> airports = response.getResponse();
         return airports;
@@ -55,11 +55,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(endpoint)
                 .queryParam("code", code);
         endpoint = builder.toUriString();
-        CommonResponse<List<Airport>> response = restTemplate.exchange(
+        AirlabsResponse<List<Airport>> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<List<Airport>>>() {
+                new ParameterizedTypeReference<AirlabsResponse<List<Airport>>>() {
                 }).getBody();
         List<Airport> airports = response.getResponse();
         if (!CollectionUtils.isEmpty(airports)) {
@@ -71,11 +71,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
     @Override
     public List<City> getCities() {
         String endpoint = URLBuilder(env.getProperty("airlabs.cities"));
-        CommonResponse<List<City>> response = restTemplate.exchange(
+        AirlabsResponse<List<City>> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<List<City>>>() {
+                new ParameterizedTypeReference<AirlabsResponse<List<City>>>() {
                 }).getBody();
         List<City> cities = response.getResponse();
         return cities;
@@ -84,11 +84,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
     @Override
     public List<Country> getCountries() {
         String endpoint = URLBuilder(env.getProperty("airlabs.countries"));
-        CommonResponse<List<Country>> response = restTemplate.exchange(
+        AirlabsResponse<List<Country>> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<List<Country>>>() {
+                new ParameterizedTypeReference<AirlabsResponse<List<Country>>>() {
                 }).getBody();
         List<Country> countries = response.getResponse();
         return countries;
@@ -97,11 +97,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
     @Override
     public List<Airline> getAirlines() {
         String endpoint = URLBuilder(env.getProperty("airlabs.airlines"));
-        CommonResponse<List<Airline>> response = restTemplate.exchange(
+        AirlabsResponse<List<Airline>> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<List<Airline>>>() {
+                new ParameterizedTypeReference<AirlabsResponse<List<Airline>>>() {
                 }).getBody();
         List<Airline> airlines = response.getResponse();
         return airlines;
@@ -115,11 +115,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
     @Override
     public List<Aircraft> getAircrafts() {
         String endpoint = URLBuilder(env.getProperty("airlabs.aircrafts"));
-        CommonResponse<List<Aircraft>> response = restTemplate.exchange(
+        AirlabsResponse<List<Aircraft>> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<List<Aircraft>>>() {
+                new ParameterizedTypeReference<AirlabsResponse<List<Aircraft>>>() {
                 }).getBody();
         List<Aircraft> aircrafts = response.getResponse();
         return aircrafts;
@@ -133,11 +133,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
     @Override
     public List<Route> getRoutes() {
         String endpoint = URLBuilder(env.getProperty("airlabs.routes"));
-        CommonResponse<List<Route>> response = restTemplate.exchange(
+        AirlabsResponse<List<Route>> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<List<Route>>>() {
+                new ParameterizedTypeReference<AirlabsResponse<List<Route>>>() {
                 }).getBody();
         List<Route> routes = response.getResponse();
         return routes;
@@ -146,11 +146,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
     @Override
     public List<Timezone> getTimezones() {
         String endpoint = URLBuilder(env.getProperty("airlabs.timezones"));
-        CommonResponse<List<Timezone>> response = restTemplate.exchange(
+        AirlabsResponse<List<Timezone>> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<List<Timezone>>>() {
+                new ParameterizedTypeReference<AirlabsResponse<List<Timezone>>>() {
                 }).getBody();
         List<Timezone> timezones = response.getResponse();
         return timezones;
@@ -162,11 +162,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(endpoint)
                 .queryParam("query", query);
         endpoint = builder.toUriString();
-        CommonResponse<AutoComplete> response = restTemplate.exchange(
+        AirlabsResponse<AutoComplete> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<AutoComplete>>() {
+                new ParameterizedTypeReference<AirlabsResponse<AutoComplete>>() {
                 }).getBody();
         AutoComplete autoComplete = response.getResponse();
         return autoComplete;
@@ -180,11 +180,11 @@ public class CleverlanceAirlabsService implements AirlabsService {
                 .queryParam("lng", lng)
                 .queryParam("distance", distance);
         endpoint = builder.toUriString();
-        CommonResponse<List<Airport>> response = restTemplate.exchange(
+        AirlabsResponse<List<Airport>> response = restTemplate.exchange(
                 endpoint,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<CommonResponse<List<Airport>>>() {
+                new ParameterizedTypeReference<AirlabsResponse<List<Airport>>>() {
                 }).getBody();
         List<Airport> airports = response.getResponse();
         return airports;

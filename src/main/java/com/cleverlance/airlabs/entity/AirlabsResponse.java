@@ -1,10 +1,10 @@
 package com.cleverlance.airlabs.entity;
 
-public class CommonResponse<T> {
+public class AirlabsResponse<T> {
     private Object request;
     private T response;
 
-    public CommonResponse() {
+    public AirlabsResponse() {
     }
 
     public Object getRequest() {

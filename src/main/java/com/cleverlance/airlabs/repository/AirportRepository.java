@@ -1,10 +1,10 @@
-package com.cleverlance.airlabs.dao;
+package com.cleverlance.airlabs.repository;
 
 import com.cleverlance.airlabs.entity.airlabs.Airport;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AirportDAO extends CrudRepository<Airport, String> {
-    public Airport findByCode(String code);
+public interface AirportRepository extends CrudRepository<Airport, String> {
+    Airport findByCode(String code);
 }
