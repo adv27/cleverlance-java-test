@@ -6,6 +6,7 @@ import com.cleverlance.airlabs.service.PingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.PrintStream;
 import java.util.List;
 
 @Service
@@ -14,10 +15,9 @@ public class PingServiceImpl implements PingService {
     private AirportRepository airportRepository;
 
     @Override
-    public String printAllAirports() {
+    public void printAllAirports(PrintStream stream) {
         List<Airport> airports = airportRepository.findAll();
         String pingMessage = airports.toString();
-        System.out.println(pingMessage);
-        return pingMessage;
+        stream.println(pingMessage);
     }
 }

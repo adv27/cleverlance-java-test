@@ -33,7 +33,7 @@ public class AirlabsController {
     @GetMapping(value = "/ping")
     @ResponseStatus(HttpStatus.OK)
     public void ping() {
-        pingService.printAllAirports();
+        pingService.printAllAirports(System.out);
     }
 
     @GetMapping(value = "/airports", produces = MediaType.APPLICATION_JSON_VALUE)

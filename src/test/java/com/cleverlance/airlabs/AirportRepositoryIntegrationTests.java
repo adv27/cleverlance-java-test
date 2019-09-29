@@ -24,8 +24,7 @@ public class AirportRepositoryIntegrationTests {
     public void whenFindByCode_thenReturnAirport() {
         // given
         Airport hanoi = new Airport("HNN", "Hanoi");
-        entityManager.persist(hanoi);
-        entityManager.flush();
+        entityManager.persistAndFlush(hanoi);
 
         // when
         Airport found = airportRepository.findByCode(hanoi.getCode());
