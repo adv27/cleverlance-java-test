@@ -1,9 +1,11 @@
 package com.cleverlance.airlabs.service;
 
 import com.cleverlance.airlabs.entity.airlabs.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface AirlabsService {
     List<Airport> getAirports();
 

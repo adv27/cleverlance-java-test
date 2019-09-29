@@ -4,6 +4,7 @@ import com.cleverlance.airlabs.entity.Response;
 import com.cleverlance.airlabs.entity.airlabs.*;
 import com.cleverlance.airlabs.repository.AirportRepository;
 import com.cleverlance.airlabs.service.AirlabsService;
+import com.cleverlance.airlabs.service.PingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,13 @@ public class AirlabsController {
     @Autowired
     private AirlabsService airlabsService;
 
+    @Autowired
+    private PingService pingService;
+
     @GetMapping(value = "/ping")
     @ResponseStatus(HttpStatus.OK)
     public void ping() {
-        System.out.println(airportRepository.findAll());
+        pingService.printAllAirports();
     }
 
     @GetMapping(value = "/airports", produces = MediaType.APPLICATION_JSON_VALUE)
