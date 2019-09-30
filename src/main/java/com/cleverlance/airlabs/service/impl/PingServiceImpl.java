@@ -14,6 +14,9 @@ public class PingServiceImpl implements PingService {
     @Autowired
     private AirportRepository airportRepository;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void printAllAirports(PrintStream stream) {
         List<Airport> airports = airportRepository.findAll();

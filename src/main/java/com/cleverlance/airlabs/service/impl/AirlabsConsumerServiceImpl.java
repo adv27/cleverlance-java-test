@@ -33,6 +33,9 @@ public class AirlabsConsumerServiceImpl implements AirlabsConsumerService {
     public AirlabsConsumerServiceImpl() {
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Airport> getAirports() {
         final String API_KEY = env.getProperty("airlabs.api-key");
@@ -51,6 +54,9 @@ public class AirlabsConsumerServiceImpl implements AirlabsConsumerService {
         return airports;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Airport getAirportByCode(String code) {
         final String API_KEY = env.getProperty("airlabs.api-key");

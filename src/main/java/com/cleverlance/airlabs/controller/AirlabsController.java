@@ -36,6 +36,12 @@ public class AirlabsController {
         pingService.printAllAirports(System.out);
     }
 
+    /**
+     * Receive data of airports
+     *
+     * @param code airport code
+     * @return data of airports or data of specific airport when @param code is not empty
+     */
     @GetMapping(value = "/airports", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Response> airports(@RequestParam(defaultValue = "", required = false) String code) {
         Response response;
