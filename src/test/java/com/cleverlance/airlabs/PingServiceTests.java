@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,5 +54,22 @@ public class PingServiceTests {
         // then
         assertThat(outputStream.toString())
                 .isEqualTo(airports.toString() + '\n');
+    }
+
+    @Test
+    public void givenNoAirport_whenPing_thenPrintEmptyArray() throws Exception {
+        // given
+        List<Airport> airports = Collections.emptyList();
+        Mockito.when(airportRepository.findAll())
+                .thenReturn(airports);
+
+        // when
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream stream = new PrintStream(outputStream);
+        pingService.printAllAirports(stream);
+
+        // then
+        assertThat(outputStream.toString())
+                .isEqualTo("[]\n");
     }
 }
