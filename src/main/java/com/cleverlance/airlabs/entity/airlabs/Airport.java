@@ -1,5 +1,6 @@
 package com.cleverlance.airlabs.entity.airlabs;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -14,8 +15,10 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Airport {
+    @ApiModelProperty(notes = "The Airport code")
     @Id
     private String code;
+    @ApiModelProperty(notes = "The Airport name")
     private String name;
 
     @Override
