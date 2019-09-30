@@ -33,5 +33,5 @@ public interface AirlabsService {
 
     List<Flight> getFlights();
 
-    List<Timetable> getTimetables();
+    Timetable getTimetable();
 }

@@ -196,7 +196,7 @@ public class CleverlanceAirlabsService implements AirlabsService {
     }
 
     @Override
-    public List<Timetable> getTimetables() {
+    public Timetable getTimetable() {
         throw new PremiumAccountOnlyException("For PREMIUM accounts only!");
     }
 }

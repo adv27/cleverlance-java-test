@@ -181,9 +181,9 @@ public class AirlabsController {
 
     @GetMapping(value = "/timetable", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Response<List<Timetable>>> timeTables() {
-        List<Timetable> timetables = airlabsService.getTimetables();
-        Response<List<Timetable>> response = new Response<>(
+    public ResponseEntity<Response<Timetable>> timeTables() {
+        Timetable timetables = airlabsService.getTimetable();
+        Response<Timetable> response = new Response<>(
                 HttpStatus.OK.value(),
                 HttpStatus.OK.getReasonPhrase(),
                 timetables);
