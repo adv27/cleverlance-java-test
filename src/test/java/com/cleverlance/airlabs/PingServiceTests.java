@@ -53,7 +53,7 @@ public class PingServiceTests {
 
         // then
         assertThat(outputStream.toString())
-                .isEqualTo(airports.toString() + '\n');
+                .isEqualTo(airports.toString() + System.lineSeparator());
     }
 
     @Test
@@ -70,6 +70,6 @@ public class PingServiceTests {
 
         // then
         assertThat(outputStream.toString())
-                .isEqualTo("[]\n");
+                .isEqualTo("[]" + System.lineSeparator());
     }
 }
